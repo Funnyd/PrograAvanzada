@@ -1,0 +1,150 @@
+﻿@model Pedidos.Abstracciones.ModelosParaUI.ProductoDto
+@{
+    ViewBag.Title = "Editar Artículo de Producto";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row tm-content-row tm-mt-big">
+    <div class="col-12">
+        <div class="bg-white tm-block">
+            <div class="row">
+                <div class="col-12">
+                    <h2 class="tm-block-title">Editar Producto</h2>
+                </div>
+            </div>
+
+            @using (Html.BeginForm("EditarProducto", "Producto", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(model => model.Id)
+
+                <div class="row mt-4">
+                    <div class="col-md-8">
+                        @Html.ValidationSummary(true, "Por favor, corrige los siguientes errores:", new { @class = "alert alert-danger" })
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    @Html.LabelFor(model => model.Nombre, new { @class = "form-label" })
+                                    @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    @Html.LabelFor(model => model.CategoriaId, new { @class = "form-label" })
+                                    @Html.EditorFor(model => model.CategoriaId, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.CategoriaId, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    @Html.LabelFor(model => model.Precio, new { @class = "form-label" })
+                                    @Html.EditorFor(model => model.Precio, new { htmlAttributes = new { @class = "form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7", type = "number", min = "1" } })
+                                    @Html.ValidationMessageFor(model => model.Precio, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    @Html.LabelFor(model => model.ImpuestoPorc, new { @class = "form-label" })
+                                    @Html.EditorFor(model => model.ImpuestoPorc, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.ImpuestoPorc, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    @Html.LabelFor(model => model.Stock, new { @class = "form-label" })
+                                    @Html.EditorFor(model => model.Stock, new { htmlAttributes = new { @class = "form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7", type = "number", min = "0" } })
+                                    @Html.ValidationMessageFor(model => model.Stock, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <div class="form-check form-switch mt-4 pt-3">
+                                        @Html.EditorFor(model => model.Activo, new { htmlAttributes = new { @class = "form-check-input", style = "margin-left: -1.5em;" } })
+                                        @Html.LabelFor(model => model.Activo, "Producto Activo", new { @class = "form-check-label fw-bold" })
+                                        @Html.ValidationMessageFor(model => model.Activo, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="mb-4">
+                            <label class="form-label d-block fw-bold">Imagen Actual</label>
+                            <img id="previewImg"
+                                 src="@Url.Content("~/Content/Uploads/" + Model.ImagenUrl)"
+                                 alt="Imagen del repuesto"
+                                 class="img-fluid border"
+                                 style="max-width: 100%; height: auto;"
+                                 onerror="this.src='@Url.Content("~/Content/Images/placeholder.svg")'" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="archivo" class="form-label fw-bold">Cambiar Imagen</label>
+                            <input type="file" id="archivo" name="archivo" class="form-control" accept="image/*" />
+                            <small class="text-muted">Formatos aceptados: JPG, PNG, GIF. Tamaño máximo: 5MB</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <div class="d-flex justify-content-between">
+                            @Html.ActionLink("Volver a la Lista", "ListarProducto", null, new { @class = "btn btn-secondary" })
+                            <div>
+                                <input type="submit" value="Guardar Cambios" class="btn btn-success" />
+                                @Html.ActionLink("Cancelar", "DetallesProducto", new { id = Model.Id }, new { @class = "btn btn-outline-secondary ms-2" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var input = document.getElementById('archivo');
+            var img = document.getElementById('previewImg');
+
+            if (input && img) {
+                input.addEventListener('change', function (evt) {
+                    const file = evt.target.files && evt.target.files[0];
+                    if (!file) return;
+
+                    // Validar tipo de archivo
+                    const validTypes = ['image/jpeg', 'image/png', 'image/gif'];
+                    if (!validTypes.includes(file.type)) {
+                        alert('Por favor, selecciona una imagen válida (JPG, PNG o GIF).');
+                        input.value = '';
+                        return;
+                    }
+
+                    // Validar tamaño (5MB)
+                    if (file.size > 5 * 1024 * 1024) {
+                        alert('La imagen no debe superar los 5MB.');
+                        input.value = '';
+                        return;
+                    }
+
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        img.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                });
+            }
+        });
+    </script>
+}

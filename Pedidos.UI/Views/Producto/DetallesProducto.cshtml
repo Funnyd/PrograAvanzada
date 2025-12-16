@@ -1,0 +1,88 @@
+﻿@model Pedidos.Abstracciones.ModelosParaUI.ProductoDto
+@{
+    ViewBag.Title = "Detalles del Artículo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row tm-content-row tm-mt-big">
+    <div class="col-12">
+        <div class="bg-white tm-block">
+            <div class="row">
+                <div class="col-12">
+                    <h2 class="tm-block-title">Detalles del Producto</h2>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-md-4">
+                    <div class="text-center">
+                        <label class="form-label d-block fw-bold mb-3">Imagen del Producto</label>
+                        <img id="previewImg"
+                             src="@Url.Content("~/Content/Uploads/" + Model.ImagenUrl)"
+                             alt="Imagen del repuesto"
+                             class="img-fluid border"
+                             style="max-width: 100%; height: auto;"
+                             onerror="this.src='@Url.Content("~/Content/Images/placeholder.svg")'" />
+                    </div>
+                </div>
+
+                <div class="col-md-8">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <td class="fw-bold" style="width: 30%; background-color: #f8f9fa;">@Html.DisplayNameFor(model => model.Id)</td>
+                                    <td>@Html.DisplayFor(model => model.Id)</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold" style="background-color: #f8f9fa;">@Html.DisplayNameFor(model => model.Nombre)</td>
+                                    <td>@Html.DisplayFor(model => model.Nombre)</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold" style="background-color: #f8f9fa;">@Html.DisplayNameFor(model => model.CategoriaId)</td>
+                                    <td>@Html.DisplayFor(model => model.CategoriaId)</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold" style="background-color: #f8f9fa;">@Html.DisplayNameFor(model => model.Precio)</td>
+                                    <td>@Html.DisplayFor(model => model.Precio)</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold" style="background-color: #f8f9fa;">@Html.DisplayNameFor(model => model.ImpuestoPorc)</td>
+                                    <td>@Html.DisplayFor(model => model.ImpuestoPorc)%</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold" style="background-color: #f8f9fa;">@Html.DisplayNameFor(model => model.Stock)</td>
+                                    <td>
+                                        <span class="badge bg-info text-dark">@Html.DisplayFor(model => model.Stock) unidades</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold" style="background-color: #f8f9fa;">@Html.DisplayNameFor(model => model.Activo)</td>
+                                    <td>
+                                        @if (Model.Activo)
+                                        {
+                                            <span class="badge bg-success">Activo</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-danger">Inactivo</span>
+                                        }
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="d-flex justify-content-start gap-2">
+                        @Html.ActionLink("Editar", "EditarProducto", new { id = Model.Id }, new { @class = "btn btn-warning" })
+                        @Html.ActionLink("Volver a la Lista", "ListarProducto", null, new { @class = "btn btn-secondary" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

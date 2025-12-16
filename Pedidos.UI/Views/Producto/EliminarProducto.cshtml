@@ -1,0 +1,112 @@
+﻿@model Pedidos.Abstracciones.ModelosParaUI.ProductoDto
+@{
+    ViewBag.Title = "Confirmar Eliminación";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row tm-content-row tm-mt-big">
+    <div class="col-12">
+        <div class="bg-white tm-block">
+            <div class="row">
+                <div class="col-12">
+                    <h2 class="tm-block-title text-danger">Confirmar Eliminación</h2>
+                </div>
+            </div>
+
+            <div class="alert alert-danger mt-3" role="alert">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-exclamation-triangle fa-2x me-3"></i>
+                    <div>
+                        <h4 class="alert-heading mb-2">¡Atención!</h4>
+                        <p class="mb-0">¿Está seguro que desea <strong>ELIMINAR</strong> este producto de forma permanente? Esta acción no se puede deshacer.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-md-4 text-center">
+                    <img id="previewImg"
+                         src="@Url.Content("~/Content/Uploads/" + Model.ImagenUrl)"
+                         alt="Imagen del repuesto"
+                         class="img-fluid border"
+                         style="max-width: 100%; height: auto;"
+                         onerror="this.src='@Url.Content("~/Content/Images/placeholder.svg")'" />
+
+                </div>
+
+                <div class="col-md-8">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <td class="fw-bold" style="width: 30%; background-color: #f8f9fa;">@Html.DisplayNameFor(model => model.Id)</td>
+                                    <td>@Html.DisplayFor(model => model.Id)</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold" style="background-color: #f8f9fa;">@Html.DisplayNameFor(model => model.Nombre)</td>
+                                    <td>@Html.DisplayFor(model => model.Nombre)</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold" style="background-color: #f8f9fa;">@Html.DisplayNameFor(model => model.CategoriaId)</td>
+                                    <td>@Html.DisplayFor(model => model.CategoriaId)</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold" style="background-color: #f8f9fa;">@Html.DisplayNameFor(model => model.Precio)</td>
+                                    <td>@Html.DisplayFor(model => model.Precio)</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold" style="background-color: #f8f9fa;">@Html.DisplayNameFor(model => model.Stock)</td>
+                                    <td>@Html.DisplayFor(model => model.Stock) unidades</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold" style="background-color: #f8f9fa;">@Html.DisplayNameFor(model => model.Activo)</td>
+                                    <td>
+                                        @if (Model.Activo)
+                                        {
+                                            <span class="badge bg-success">Activo</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-danger">Inactivo</span>
+                                        }
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(model => model.Id)
+
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <div class="d-flex justify-content-between align-items-center">
+                            @Html.ActionLink("Cancelar y Volver", "ListarProducto", null, new { @class = "btn btn-secondary" })
+                            <div>
+                                <button type="button" class="btn btn-outline-danger me-2" onclick="history.back()">
+                                    <i class="fas fa-arrow-left me-1"></i>Regresar
+                                </button>
+                                <input type="submit" value="Eliminar Permanentemente" class="btn btn-danger" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="alert alert-warning">
+                        <small>
+                            <i class="fas fa-info-circle me-1"></i>
+                            <strong>Nota:</strong> Al eliminar este producto, se eliminarán todos los registros asociados y no podrá ser recuperado.
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,71 @@
+﻿@model IEnumerable<Pedidos.Abstracciones.ModelosParaUI.PedidoDto>
+@{
+    ViewBag.Title = "Lista de Pedidos";
+}
+<link rel="stylesheet" href="https://cdn.datatables.net/2.3.5/css/dataTables.dataTables.css" />
+<script src="https://cdn.datatables.net/2.3.5/js/dataTables.js"></script>
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-12">
+
+            <h2 class="mb-3">@ViewBag.Title</h2>
+
+
+            <div class="table-responsive">
+
+
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover table-bordered" id="tablaServicios2">
+                        <thead class="">
+                            <tr>
+                                <th>ID</th>
+                                <th>ClienteID</th>
+                                <th>Fecha</th>
+                                <th>Subtotal</th>
+                                <th>Impuestos</th>
+                                <th>Total</th>
+                                <th>Estado</th>
+                                <th class="text-center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                if (item.Estado == "Pendiente")
+                                {
+                                    <tr>
+                                        <td>@Html.DisplayFor(modelItem => item.Id)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.ClienteId)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Fecha)</td>
+                                        <td>₡@Html.DisplayFor(modelItem => item.Subtotal)</td>
+                                        <td>₡@Html.DisplayFor(modelItem => item.Impuestos)</td>
+                                        <td>₡@Html.DisplayFor(modelItem => item.Total)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Estado)</td>
+                                        <td class="text-center text-nowrap">
+
+                                            @Html.ActionLink("Detalles", "DetallesPedido", new { id = item.Id }, new { @class = "btn btn-sm btn-secondary" }) 
+                                        </td>
+
+                                    </tr>
+                                }
+
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="../Scripts/jquery-3.7.0.min.js"></script>
+    <script src="../Scripts/DataTable/dataTables.js"></script>
+    <script>
+        $(document).ready(function () {
+            let productosTable = new DataTable('#tablaServicios2');
+
+        });
+    </script>
+}
